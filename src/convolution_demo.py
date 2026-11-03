@@ -35,12 +35,13 @@ IMAGE = np.array(
 )
 
 # The 3 x 3 structuring element.  The numbers are the weights each pixel is
-# multiplied with.  The 4 corners are switched off ("None"), so the shape is a
+# multiplied with; the output is the average of those products (their sum
+# divided by the number of pixels under the structuring element).  The 4 corners are switched off ("None"), so the shape is a
 # plus sign rather than a square.  Try changing the weights and run again.
 KERNEL = [
-    [None, 1, None],
-    [1, 1, 1],
-    [None, 1, None],
+    [None, -1, None],
+    [-1, 4, -1],
+    [None, -1, None],
 ]
 
 INPUT_COLOR = "#dbe9f6"
@@ -92,7 +93,8 @@ def plus_outline(row, col):
 
 
 def draw_step(fig, step, centers, output):
-    """Draw one picture: input with the structuring element, the sum, the output."""
+    """Draw one picture: input with the structuring element, the average, the
+    output."""
     fig.clear()
     ax_in, ax_calc, ax_out = fig.subplots(1, 3, gridspec_kw={"width_ratios": [5, 4, 5]})
     row, col = centers[step]
@@ -119,12 +121,15 @@ def draw_step(fig, step, centers, output):
                                         color="#c0392b", lw=2, ls="--", shrinkA=14, shrinkB=22,
                                         connectionstyle="arc3,rad=-0.3"))
 
-    # The calculation, written out.
+    # The calculation, written out: add up weight x pixel for every covered
+    # pixel, then divide by how many pixels there are to get the average.
     terms = [f"{w}×{IMAGE[r][c]}" for r, c, w in cells]
-    result = sum(w * IMAGE[r][c] for r, c, w in cells)
+    total = sum(w * IMAGE[r][c] for r, c, w in cells)
+    result = round(total / len(cells), 2)
     output[row][col] = result
     lines = [" + ".join(terms[i:i + 3]) for i in range(0, len(terms), 3)]
-    text = "\n+ ".join(lines) + f"\n\n= {result}"
+    text = ("(" + "\n+ ".join(lines) + f")\n/ {len(cells)}"
+            f"\n\n= {total} / {len(cells)} = {result:g}")
     ax_calc.axis("off")
     ax_calc.text(0.5, 0.62, text, ha="center", va="center", fontsize=15,
                  family="monospace")
@@ -143,7 +148,7 @@ def draw_step(fig, step, centers, output):
         out_values[r][c] = ""
     for r, c in centers[: step + 1]:
         out_colors[r][c] = OUTPUT_COLOR
-        out_values[r][c] = output[r][c]
+        out_values[r][c] = f"{output[r][c]:g}"
     out_colors[row][col] = NEW_COLOR
     draw_grid(ax_out, out_values, out_colors, "Output image")
     fig.tight_layout()
@@ -154,7 +159,8 @@ def main():
     # The structuring element only fits completely at the 3 x 3 inner pixels.
     # Visit them row by row, left to right, starting near the origin (top left).
     centers = [(r, c) for r in range(1, 4) for c in range(1, 4)]
-    output = np.zeros_like(IMAGE)
+    # float, not whole numbers, because an average can have decimals.
+    output = np.zeros(IMAGE.shape, dtype=float)
 
     fig = plt.figure(figsize=(13, 4.6))
     for step in range(len(centers)):
