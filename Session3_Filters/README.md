@@ -32,7 +32,7 @@ Continue until every pixel has been visited.  The animation shows all steps:
 
 Notice that the pixels at the edge of the output image are marked "?".  When the center sits on an edge pixel, part of the structuring element falls outside the image, so there are no input values to multiply with.  Software has to make a choice here, for instance by pretending that the pixels outside the image are zero, or copies of the edge pixels.  Different choices give slightly different results at the image border.
 
-* The pictures above were made with `uv run src/convolution_demo.py`.  Ask your AI coding assistant to change the weights in the structuring element (for instance, 4 in the center and -1 for the 4 neighbors) and run the script again.  What happens to the output values?  What do you need to change to calculate the average of the 5 pixels instead of the sum?
+* The pictures above were made with `uv run src/convolution_demo.py`.  Edit that script to change the weights in the structuring element (for instance, 4 in the center and -1 for the 4 neighbors) and run the script again.  What happens to the output values?  What do you need to change to calculate the average of the 5 pixels instead of the sum?
 
 * Can you calculate the input image based on the output image and the structuring element (which often is called "kernel"?  If so, how would you do it?  
 

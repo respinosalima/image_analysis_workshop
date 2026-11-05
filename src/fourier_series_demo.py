@@ -37,7 +37,7 @@ FADED_COLOR = "#c8c8c8"
 
 # The square wave: +1 for half a second, -1 for half a second, repeating.
 PERIOD = 1.0  # seconds
-TIME = np.linspace(0, 2 * PERIOD, 1000)  # show two repeats
+TIME = np.linspace(0, 2 * PERIOD, 4000)  # show two repeats (enough points to draw fast waves smoothly)
 
 
 def square_wave(t, shift=0.0):
@@ -176,7 +176,7 @@ def circle_to_wave():
 
 # --- 2. Adding sine waves one by one ------------------------------------------
 
-def square_wave_build(n_waves=10):
+def square_wave_build(n_waves=50):
     freqs, amps, phases = square_wave_recipe(n_waves)
     target = square_wave(TIME)
     fig = plt.figure(figsize=(12, 6.5))

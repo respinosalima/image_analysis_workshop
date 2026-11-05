@@ -4,8 +4,8 @@ Run it from the top folder of the workshop repository with:
 
     uv run src/fourier_convolution_demo.py
 
-The noisy nucleus image is smoothed with the 3 x 3 "Smooth" kernel (all ones,
-divided by 9) in two ways: by convolution, and by multiplying the Fourier
+The noisy nucleus image is smoothed with the 7 x 7 "Smooth" kernel (all ones,
+divided by 49) in two ways: by convolution, and by multiplying the Fourier
 images and transforming back.  The script prints how much the two results
 differ, and saves a picture in Pictures/fourier2d/convolution_theorem.png.
 """
@@ -24,7 +24,7 @@ REPO = Path(__file__).resolve().parent.parent
 INPUT = REPO / "testImages" / "Nucleus_cropped_noise.tif"
 OUTPUT = REPO / "Pictures" / "fourier2d" / "convolution_theorem.png"
 
-KERNEL = np.ones((3, 3)) / 9  # the Smooth kernel from Session 3
+KERNEL = np.ones((7, 7)) / 49  # a larger version of the Smooth kernel from Session 3
 
 
 def fourier(image):
@@ -80,7 +80,7 @@ kernel_zoom = kernel_zoom[center_row - zoom:center_row + zoom + 1,
 fig, axes = plt.subplots(2, 3, figsize=(13, 9))
 panels = [
     (axes[0, 0], image, "noisy image", img_range),
-    (axes[0, 1], kernel_zoom, "3 x 3 Smooth kernel (enlarged)", {}),
+    (axes[0, 1], kernel_zoom, f"{KERNEL.shape[0]} x {KERNEL.shape[1]} Smooth kernel (enlarged)", {}),
     (axes[0, 2], smoothed, "smoothed image", img_range),
     (axes[1, 0], image_amp, "Fourier image (amplitudes, log)", amp_range),
     (axes[1, 1], kernel_amp, "Fourier image of the kernel\n(amplitudes, not log)",

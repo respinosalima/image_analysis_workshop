@@ -70,7 +70,7 @@ You now have seen how one can go from an image of nuclei to an image with number
 - What is the standard deviation of the pixel values in the original image under the mask (per nucleus)?
 - etc....
 
-* Ask your AI coding assistant to write a script to calculate these things
+> * Ask your AI coding assistant to write a script to calculate these things
 
 * If metaphase cells were present, how could you detect these in the output of the values you just received?
 

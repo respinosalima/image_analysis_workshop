@@ -81,5 +81,11 @@ Then run the test script using:
  uv run src/show_image.py
  ```
 
+Note, this command will not exit until you close the (napari) viewer.  If you would like to continue working on the command line while the Python script is running, you can do:
+
+```text
+uv run src/show_image.py &
+```
+
 Fun fact, you can actually skip "uv sync", uv will set up the environment also when you use "uv run". Next time you run the script, it will be much faster.
 

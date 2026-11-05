@@ -59,6 +59,11 @@ Note about color-blind friendly LUTs: About 8% of men and 0.5% of women of North
 
 Datasets also can contain multiple time points, Z positions, XY positions, angles, or what not.  This will somehow need to be indicated in the metadata of the image.  The software needs to be aware of those metadata to represent the data in a useful way.  This turns out to be a struggle.
 
+## Cropping image data
+It is often useful to reduce the size of an image, either because a large part of the image does not contain relevant data, or to experiment with image analysis code more quickly (the code will run much faster on smaller images).  You can crop data by giving the desired x, y, width and height, but if your image has other dimensions (time, channel, z), you can crop those as well.  In fact, the images with "cropped" in their names were cropped.  I often find it easiest to do it visually, using Fiji/ImageJ, but you can also do it with code.  
+
+* Open the image testImages/3Channel_FF_Corrected_1/3Channel_FF_Corrected_1MMStack_Pos0.ome.tif in napari (using the napari-tiff reader, you may need to change the colormap to make the layers visible). Using the cursor, find a start x and y position and a nice width and height that encloses one nucleus.  Ask your AI coding assitsnant to write a script to crop the input image so that you end up with a small tiff with only the region of interest (ROI) from the DAPI channel.  Inspect the resulting image to make sure that it is correct.  INspect the code, find where the crop is set, change the x and y position, run the script, and check that it gives the desired result.  
+
 ## Storage of image data
 The most straightforward way to store images appears to be to store the stream of pixel intensities directly, and to store the metadata describing the images.  This is exactly what the [Image Cytometry Standard (ICS), proposed in 1990](http://dx.doi.org/10.1002/cyto.990110502), does.  
 
